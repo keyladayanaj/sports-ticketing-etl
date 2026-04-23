@@ -1,5 +1,3 @@
-import 'ticket_type.dart';
-
 enum TicketType {
   arquibancada,
   cadeira,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'ticket_type.dart';
+import 'summary_screen.dart';
 
 class TicketFormScreen extends StatefulWidget {
   const TicketFormScreen({super.key});
@@ -9,7 +10,6 @@ class TicketFormScreen extends StatefulWidget {
 }
 
 class _TicketFormScreenState extends State<TicketFormScreen> {
-
   String selectedGame = 'Palmeiras vs Corinthians';
   String fanName = '';
   TicketType selectedTicketType = TicketType.arquibancada;
@@ -44,7 +44,6 @@ class _TicketFormScreenState extends State<TicketFormScreen> {
       body: SafeArea(
         child: Column(
           children: [
-
             // 🔥 TÍTULO ADICIONADO AQUI
             const Padding(
               padding: EdgeInsets.all(16),
@@ -54,10 +53,7 @@ class _TicketFormScreenState extends State<TicketFormScreen> {
                   SizedBox(width: 8),
                   Text(
                     'Ingressos para o jogo',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -69,7 +65,6 @@ class _TicketFormScreenState extends State<TicketFormScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     // DROPDOWN DO JOGO (pág. 53 e 58)
                     const Text(
                       'Jogo',
@@ -82,17 +77,18 @@ class _TicketFormScreenState extends State<TicketFormScreen> {
                       decoration: const InputDecoration(
                         border: UnderlineInputBorder(),
                       ),
-                      items: [
-                        'Palmeiras vs Corinthians',
-                        'São Paulo vs Santos',
-                        'Flamengo vs Vasco',
-                        'Atlético vs Cruzeiro',
-                      ].map((jogo) {
-                        return DropdownMenuItem(
-                          value: jogo,
-                          child: Text(jogo),
-                        );
-                      }).toList(),
+                      items:
+                          [
+                            'Palmeiras vs Corinthians',
+                            'São Paulo vs Santos',
+                            'Flamengo vs Vasco',
+                            'Atlético vs Cruzeiro',
+                          ].map((jogo) {
+                            return DropdownMenuItem(
+                              value: jogo,
+                              child: Text(jogo),
+                            );
+                          }).toList(),
                       onChanged: (value) {
                         setState(() {
                           selectedGame = value!;
@@ -238,7 +234,6 @@ class _TicketFormScreenState extends State<TicketFormScreen> {
                     ),
 
                     const SizedBox(height: 8),
-
                   ],
                 ),
               ),
@@ -255,7 +250,6 @@ class _TicketFormScreenState extends State<TicketFormScreen> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
@@ -263,6 +257,50 @@ class _TicketFormScreenState extends State<TicketFormScreen> {
   }
 
   void _comprarIngressos() {
-    // implementamos no próximo passo
+    final total = _calcularTotal();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SummaryScreen(
+          fanName: fanName,
+          game: selectedGame,
+          quantity: quantity,
+          homeTeam: homeTeam,
+          total: total,
+     
+        ),
+      ),
+    );
+  }
+
+  double _calcularTotal() {
+    double total = 0;
+
+    // 🎟️ tipo de ingresso
+    switch (selectedTicketType) {
+      case TicketType.arquibancada:
+        total += 50;
+        break;
+      case TicketType.cadeira:
+        total += 90;
+        break;
+      case TicketType.camarote:
+        total += 160;
+        break;
+    }
+
+    // ➕ serviços adicionais
+    if (parking) total += 50;
+    if (snack) total += 20;
+    if (lounge) total += 90;
+
+    // 👕 extra que você criou
+    if (shirt) total += 30;
+
+    // 🔢 quantidade
+    total = total * quantity;
+
+    return total;
   }
 }
