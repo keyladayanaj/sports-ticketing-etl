@@ -45,6 +45,24 @@ class _TicketFormScreenState extends State<TicketFormScreen> {
         child: Column(
           children: [
 
+            // 🔥 TÍTULO ADICIONADO AQUI
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Icon(Icons.sports_soccer),
+                  SizedBox(width: 8),
+                  Text(
+                    'Ingressos para o jogo',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
